@@ -18,7 +18,7 @@ class Igiya {
         let self = this;
         this.data = store.get(self.store_name);
 
-        if (this.initialized && this.data) {
+        if (this.data) {
             callback(false, true, []);
             return true;
         }
