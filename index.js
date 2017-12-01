@@ -6,7 +6,6 @@ class Igiya {
     constructor() {
 
     }
-
     initialize(url,param = [], callback = function () {}) {
 
         this.url = url;
@@ -16,6 +15,7 @@ class Igiya {
 
         request
             .get(self.url, function(error, response, body) {
+                store.set(Igiya,body);
                 callback(error, response, body);
             });
     }
