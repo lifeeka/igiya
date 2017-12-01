@@ -58,4 +58,4 @@ class Igiya {
 }
 
 
-module.exports = new Igiya();
+module.exports = Igiya;
