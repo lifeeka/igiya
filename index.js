@@ -1,12 +1,9 @@
-let store = require('store');
-let request = require('request');
-let _ = require('lodash/core');
+var  store = require('store');
+var  request = require('request');
+var  _ = require('lodash/core');
 
 class Igiya {
 
-    constructor() {
-
-    }
 
     initialize(url, param = [], store_name = 'igiya', callback = function () {
     }) {
@@ -15,7 +12,7 @@ class Igiya {
         this.param = url;
         this.store_name = store_name;
 
-        let self = this;
+        var  self = this;
         this.data = store.get(self.store_name);
 
         if (this.data) {
@@ -37,10 +34,10 @@ class Igiya {
 
     search(attribute, keyword , matches = false) {
 
-        let self = this;
-        let data = store.get(self.store_name);
+        var  self = this;
+        var  data = store.get(self.store_name);
 
-        let filter_list = data;
+        var  filter_list = data;
 
          if(matches)
             filter_list = _.filter(filter_list, _.matches(matches));

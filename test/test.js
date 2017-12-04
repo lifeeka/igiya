@@ -12,7 +12,7 @@ it('should respond with redirect on get', function(done) {
 
     IgiyaClass.initialize("http://apple.dev/ajax/map/search?type=place", {}, 'igiya', function (error, response, body) {
 
-            let result = IgiyaClass.search('name', null,{
+            var result = IgiyaClass.search('name', null,{
                 'is_stop': true,
             });
 
