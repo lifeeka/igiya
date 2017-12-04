@@ -1,6 +1,7 @@
-var  store = require('store');
-var  request = require('request');
-var  _ = require('lodash/core');
+let   store = require('store');
+let   request = require('request');
+let  _filter = require('lodash/filter');
+let  _matches = require('lodash/matches');
 
 class Igiya {
 
@@ -12,7 +13,7 @@ class Igiya {
         this.param = url;
         this.store_name = store_name;
 
-        var  self = this;
+        let   self = this;
         this.data = store.get(self.store_name);
 
         if (this.data) {
@@ -34,16 +35,17 @@ class Igiya {
 
     search(attribute, keyword , matches = false) {
 
-        var  self = this;
-        var  data = store.get(self.store_name);
 
-        var  filter_list = data;
+        let   self = this;
+        let   data = store.get(self.store_name);
+
+        let   filter_list = data;
 
          if(matches)
-            filter_list = _.filter(filter_list, _.matches(matches));
+            filter_list = _filter(filter_list, _matches(matches));
 
          if(keyword) {
-             filter_list = _.filter(filter_list, function (data_array) {
+             filter_list = _filter(filter_list, function (data_array) {
                  return data_array[attribute].toUpperCase().includes(keyword.toUpperCase());
              });
          }
