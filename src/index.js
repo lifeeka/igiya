@@ -1,5 +1,5 @@
 let   store = require('store');
-let   request = require('request');
+let   request = require('superagent');
 let  _filter = require('lodash/filter');
 let  _matches = require('lodash/matches');
 

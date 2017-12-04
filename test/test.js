@@ -2,7 +2,7 @@ let chai = require("chai");
 let expect = chai.expect;
 let assert = chai.assert;
 chai.config.includeStack = true;
-let Igiya = require('../index');
+let Igiya = require('../lib/index');
 let IgiyaClass = new Igiya();
 
 
