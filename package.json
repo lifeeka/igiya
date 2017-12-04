@@ -2,9 +2,17 @@
   "name": "igiya",
   "version": "0.0.8",
   "description": "Suggetion engin",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "babel-version": "babel --version",
+    "prepublish": "babel src --out-dir lib",
+    "upload": "git add . && git commit -m \"npm publish\" && git push "
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
   },
   "repository": {
     "type": "git",
@@ -28,6 +36,9 @@
     "request": "^2.83.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
     "chai": "^4.1.2",
     "mocha": "^4.0.1"
   }
