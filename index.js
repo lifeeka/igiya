@@ -1,6 +1,6 @@
 let store = require('store');
 let request = require('request');
-let _ = require('lodash');
+let _ = require('lodash/core');
 
 class Igiya {
 
