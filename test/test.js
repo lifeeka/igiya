@@ -2,7 +2,7 @@ let chai = require("chai");
 let expect = chai.expect;
 let assert = chai.assert;
 chai.config.includeStack = true;
-let Igiya = require('../lib/index');
+let Igiya = require('../src/index');
 let IgiyaClass = new Igiya();
 
 
@@ -12,9 +12,9 @@ it('should respond with redirect on get', function(done) {
 
     IgiyaClass.initialize("http://apple.dev/ajax/map/search?type=place", {}, 'igiya', function (error, response, body) {
 
-            var result = IgiyaClass.search('name', null,{
+            var result = IgiyaClass.search(/*'name', null,{
                 'is_stop': true,
-            });
+            }*/);
 
             expect(result).to.be.an('array');
             console.log(result);

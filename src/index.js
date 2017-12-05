@@ -1,7 +1,8 @@
-let   store = require('store');
-let   request = require('superagent');
-let  _filter = require('lodash/filter');
-let  _matches = require('lodash/matches');
+let _store = require('store');
+let request = require('superagent');
+
+let _filter = require('lodash/filter');
+let _matches = require('lodash/matches');
 
 class Igiya {
 
@@ -13,42 +14,47 @@ class Igiya {
         this.param = url;
         this.store_name = store_name;
 
-        let   self = this;
-        this.data = store.get(self.store_name);
+        let self = this;
+        this.data = _store.get(self[store_name]);
 
-        if (this.data) {
+
+        if (this.data !== undefined) {
             callback(false, true, []);
             return true;
         }
 
         request
-            .get(self.url, function (error, response, body) {
+            .get(self.url).set('accept', 'json').end((error, body) => {
 
-                self.data = JSON.parse(body);
+                try {
 
-                self.initialized = true;
-                store.set(self.store_name, self.data);
-                callback(error, response, self.data);
-                return true;
-            });
+                    self.data = JSON.parse(body.text);
+                    self.initialized = true;
+                    _store.set(self.store_name, self.data);
+                    callback(error, self.data);
+                }
+                catch(e){
+                    callback(error, self.data);
+                }
+
+
+        });
     }
 
-    search(attribute, keyword , matches = false) {
+    search(attribute, keyword, matches = false) {
 
 
-        let   self = this;
-        let   data = store.get(self.store_name);
+        let self = this;
+        let filter_list = _store.get(self.store_name);
 
-        let   filter_list = data;
-
-         if(matches)
+        if (matches)
             filter_list = _filter(filter_list, _matches(matches));
 
-         if(keyword) {
-             filter_list = _filter(filter_list, function (data_array) {
-                 return data_array[attribute].toUpperCase().includes(keyword.toUpperCase());
-             });
-         }
+        if (keyword) {
+            filter_list = _filter(filter_list, function (data_array) {
+                return data_array[attribute].toUpperCase().includes(keyword.toUpperCase());
+            });
+        }
 
         return filter_list;
 
