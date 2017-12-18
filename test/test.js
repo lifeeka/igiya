@@ -10,15 +10,17 @@ it('should respond with redirect on get', function(done) {
 
     this.timeout(5000);
 
-    IgiyaClass.initialize("http://apple.dev/ajax/map/search?type=place", {}, 'igiya', function (error, response, body) {
+    IgiyaClass.initialize("http://apple.d/ajax/map/search?type=place", {}, 'igiya', 10, 'q', 'id', function (error, response) {
+          IgiyaClass.search(function (result) {
 
-            var result = IgiyaClass.search(/*'name', null,{
-                'is_stop': true,
-            }*/);
 
-            expect(result).to.be.an('array');
-            console.log(result);
-            done();
+              expect(result).to.be.an('array');
+              console.log(result);
+              done();
+
+            },'name', 'Malé');
+
+
 
         });
 

@@ -3,16 +3,45 @@ let request = require('superagent');
 
 let _filter = require('lodash/filter');
 let _matches = require('lodash/matches');
+let _merge = require('lodash/merge');
 
 class Igiya {
 
 
-    initialize(url, param = [], store_name = 'igiya', callback = function () {
+    static merge(main_data, data_merge, data_merge_element) {
+
+        let data = main_data;
+
+
+
+        for (let e = 0; e < data_merge.length; e++) {
+
+            let is_found = false;
+            for (let i = 0; i < main_data.length; i++) {
+                if (main_data[i][data_merge_element] === data_merge[e][data_merge_element]) {
+                    is_found = true;
+                }
+            }
+            if (!is_found) {
+                data.push(data_merge[e]);
+            }
+        }
+
+        return data;
+    }
+
+    initialize(url, param = [], store_name = 'igiya', refetch_limit = 10, refetch_keyword = 'q', data_merge_element = 'id', callback = function () {
     }) {
+
 
         this.url = url;
         this.param = url;
         this.store_name = store_name;
+
+        //refetch
+        this.refetch_limit = refetch_limit;
+        this.refetch_keyword = refetch_keyword;
+        this.data_merge_element = data_merge_element;
 
         let self = this;
         this.data = _store.get(self[store_name]);
@@ -23,25 +52,49 @@ class Igiya {
             return true;
         }
 
-        request
-            .get(self.url).set('accept', 'json').end((error, body) => {
 
-                try {
-
-                    self.data = JSON.parse(body.text);
-                    self.initialized = true;
-                    _store.set(self.store_name, self.data);
-                    callback(error, self.data);
-                }
-                catch(e){
-                    callback(error, self.data);
-                }
-
-
+        this.fetch(function (error, body) {
+            callback(error, self.data);
         });
+
     }
 
-    search(attribute, keyword, matches = false) {
+    fetch(callback = function () {
+    }, keyword = false) {
+
+        let self = this;
+        let data = {};
+        if (keyword) {
+            data[this.refetch_keyword] = keyword
+        }
+
+
+        request
+            .get(self.url)
+            .set('accept', 'json')
+            .send(data)
+            .end((error, body) => {
+                try {
+                    if (self.data !== undefined) {
+                        self.data = Igiya.merge(self.data, JSON.parse(body.text), self.data_merge_element);
+                    }
+                    else
+                        self.data = JSON.parse(body.text);
+
+
+                    _store.set(self.store_name, self.data);
+                    self.initialized = true;
+                    callback(error, self.data);
+                }
+                catch (e) {
+                    callback(error, self.data);
+                }
+
+
+            });
+    }
+
+    search(callback, attribute, keyword, matches = false, refetch = true) {
 
 
         let self = this;
@@ -56,7 +109,19 @@ class Igiya {
             });
         }
 
-        return filter_list;
+        if (filter_list.length < this.refetch_limit && refetch) {//if there are less suggestion refetch the server
+            this.fetch(function (error, body) {
+                self.search(function (result) {
+                    callback(result);
+                }, attribute, keyword, matches, false);
+
+            }, keyword)
+        }
+        else {
+
+
+            callback(filter_list);
+        }
 
     }
 
