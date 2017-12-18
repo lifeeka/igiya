@@ -13,7 +13,6 @@ class Igiya {
         let data = main_data;
 
 
-
         for (let e = 0; e < data_merge.length; e++) {
 
             let is_found = false;
@@ -43,6 +42,9 @@ class Igiya {
         this.refetch_keyword = refetch_keyword;
         this.data_merge_element = data_merge_element;
 
+        this.list_refetch_keyword = [];
+
+
         let self = this;
         this.data = _store.get(self[store_name]);
 
@@ -64,16 +66,33 @@ class Igiya {
 
         let self = this;
         let data = {};
-        if (keyword) {
-            data[this.refetch_keyword] = keyword
+
+        if (self.list_refetch_keyword.includes(keyword)) {
+            callback(null, self.data);
+            return self.data;
         }
 
 
+
+        if (keyword) {
+            self.list_refetch_keyword.push(keyword);
+            data[self.refetch_keyword] = keyword;
+        }
+
+        if (this.busy) {
+            callback(null, self.data);
+            return self.data;
+        }
+
+        self.busy = true;
         request
             .get(self.url)
             .set('accept', 'json')
-            .send(data)
+            .query(data)
             .end((error, body) => {
+
+                self.busy = false;
+
                 try {
                     if (self.data !== undefined) {
                         self.data = Igiya.merge(self.data, JSON.parse(body.text), self.data_merge_element);
@@ -83,7 +102,6 @@ class Igiya {
 
 
                     _store.set(self.store_name, self.data);
-                    self.initialized = true;
                     callback(error, self.data);
                 }
                 catch (e) {
@@ -95,7 +113,6 @@ class Igiya {
     }
 
     search(callback, attribute, keyword, matches = false, refetch = true) {
-
 
         let self = this;
         let filter_list = _store.get(self.store_name);
@@ -110,7 +127,10 @@ class Igiya {
         }
 
         if (filter_list.length < this.refetch_limit && refetch) {//if there are less suggestion refetch the server
-            this.fetch(function (error, body) {
+
+            self.fetch(function (error, body) {
+                console.log(body);
+
                 self.search(function (result) {
                     callback(result);
                 }, attribute, keyword, matches, false);
@@ -118,8 +138,6 @@ class Igiya {
             }, keyword)
         }
         else {
-
-
             callback(filter_list);
         }
 

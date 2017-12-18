@@ -10,7 +10,7 @@ it('should respond with redirect on get', function(done) {
 
     this.timeout(5000);
 
-    IgiyaClass.initialize("http://apple.d/ajax/map/search?type=place", {}, 'igiya', 10, 'q', 'id', function (error, response) {
+    IgiyaClass.initialize("http://apple.d/ajax/map/search/place", {}, 'igiya', 10, 'q', 'id', function (error, response) {
           IgiyaClass.search(function (result) {
 
 
@@ -18,7 +18,8 @@ it('should respond with redirect on get', function(done) {
               console.log(result);
               done();
 
-            },'name', 'Malé');
+            },'name', "Male");
+
 
 
 
