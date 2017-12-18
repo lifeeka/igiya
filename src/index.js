@@ -67,22 +67,22 @@ class Igiya {
         let self = this;
         let data = {};
 
-        if (self.list_refetch_keyword.includes(keyword)) {
+        if (this.busy) {
             callback(null, self.data);
             return self.data;
         }
 
-
+        if (self.list_refetch_keyword.includes(keyword)) {
+            callback(null, self.data);
+            return self.data;
+        }
 
         if (keyword) {
             self.list_refetch_keyword.push(keyword);
             data[self.refetch_keyword] = keyword;
         }
 
-        if (this.busy) {
-            callback(null, self.data);
-            return self.data;
-        }
+
 
         self.busy = true;
         request
