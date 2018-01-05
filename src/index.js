@@ -130,8 +130,6 @@ class Igiya {
         if (filter_list.length < this.refetch_limit && refetch) {//if there are less suggestion refetch the server
 
             self.fetch(function (error, body) {
-                console.log(body);
-
                 self.search(function (result) {
                     callback(result);
                 }, attribute, keyword, matches, false);

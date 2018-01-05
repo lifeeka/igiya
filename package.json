@@ -1,13 +1,13 @@
 {
   "name": "igiya",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Suggetion engin",
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha",
     "babel-version": "babel --version",
-    "prepublish": "babel src --out-dir lib",
-    "upload": "npm run prepublish && npm version patch && npm publish"
+    "build": "babel src --presets babel-preset-es2015 --out-dir lib",
+    "upload": "npm run build && npm version patch && npm publish"
   },
   "babel": {
     "presets": [
