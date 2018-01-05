@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/lifeeka/igiya#readme",
   "dependencies": {
+    "axios": "^0.17.1",
     "lodash": "^4.17.4",
     "store": "^2.0.0",
     "superagent": "^3.8.1"
