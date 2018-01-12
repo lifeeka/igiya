@@ -1,5 +1,5 @@
 let _store = require('store');
-let request = require('superagent');
+let axios = require('axios');
 
 let _filter = require('lodash/filter');
 let _matches = require('lodash/matches');
@@ -84,31 +84,33 @@ class Igiya {
 
 
         self.busy = true;
-        request
-            .get(self.url)
-            .set('accept', 'json')
-            .query(data)
-            .end((error, body) => {
 
+
+        const request = axios.get(self.url, {params: data});
+
+        return request.then(response => {
                 self.busy = false;
 
                 try {
                     if (self.data !== undefined) {
-                        self.data = Igiya.merge(self.data, JSON.parse(body.text), self.data_merge_element);
+                        self.data = Igiya.merge(self.data, response.data, self.data_merge_element);
                     }
                     else
-                        self.data = JSON.parse(body.text);
+                        self.data = response.data;
 
 
                     _store.set(self.store_name, self.data);
-                    callback(error, self.data);
+                    callback(false, self.data);
                 }
                 catch (e) {
-                    callback(error, self.data);
+                    callback(e.message, self.data);
                 }
-
-
+            },
+            (error) => {
+                callback(true, error.response);
             });
+
+
     }
 
     search(callback, attribute, keyword, matches = false, refetch = true) {
