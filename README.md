@@ -1,5 +1,7 @@
 <p align="center"><img src="https://raw.githubusercontent.com/lifeeka/igiya/master/src/image/logo.png"></p>
 
+[![npm version](https://badge.fury.io/js/igiya.svg)](https://badge.fury.io/js/igiya)
+
 ## Igiya
 igiya is a suggestion engine that use local storage. igiya is flexible and lightweight.
 
