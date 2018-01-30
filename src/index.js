@@ -29,7 +29,7 @@ class Igiya {
     }
 
     initialize(url, param = [], store_name = 'igiya', refetch_limit = 10, refetch_keyword = 'q', data_merge_element = 'id', callback = function () {
-    }) {
+    }, forced = true) {
 
 
         this.url = url;
@@ -45,10 +45,10 @@ class Igiya {
 
 
         let self = this;
-        this.data = _store.get(self[store_name]);
+        this.data = _store.get(self.store_name);
 
 
-        if (this.data !== undefined) {
+        if (this.data !== undefined && this.data.length > 0 && !forced) {
             callback(false, true, []);
             return true;
         }
