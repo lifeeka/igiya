@@ -9,20 +9,20 @@ igiya is a suggestion engine that use local storage. igiya is flexible and light
     npm install igiya
 
 ## Example
-
-	var Igiya = require('igiya');
-	IgiyaInstance = new Igiya();
+```ecmascript 6
+let Igiya = require('igiya');
+IgiyaInstance = new Igiya();
+	 
+  //initialize igiya when page load
+  IgiyaInstance.initialize("http://example.come/data.json");
 	
-    //initialize igiya when page load
-    IgiyaInstance.initialize("http://example.come/data.json");
-	
-	//trigger search	
-	$(document).on("keyup", ".seach", function (e) {//using jquery
-		 IgiyaInstance.search(function (data) {
-			 console.log(data);
-		 }, 'column_name', $(this).val());
-	 });  
-
+  //trigger search
+  $(document).on("keyup", ".seach", function (e) {//using jquery
+    IgiyaInstance.search(function (data) {
+      console.log(data);
+    }, 'column_name', $(this).val());
+  });  
+```
 ### json example
 json array must be  nested
 
