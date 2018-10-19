@@ -29,12 +29,13 @@ class Igiya {
     }
 
     initialize(url, param = [], store_name = 'igiya', refetch_limit = 10, refetch_keyword = 'q', data_merge_element = 'id', callback = function () {
-    }, forced = true) {
+    }, forced = true, nestedAttribute = false) {
 
 
         this.url = url;
         this.param = url;
         this.store_name = store_name;
+        this.nestedAttribute = nestedAttribute;
 
         //refetch
         this.refetch_limit = refetch_limit;
@@ -81,10 +82,7 @@ class Igiya {
             data[self.refetch_keyword] = keyword;
         }
 
-
-
         self.busy = true;
-
 
         const request = axios.get(self.url, {params: data});
 
@@ -92,11 +90,13 @@ class Igiya {
                 self.busy = false;
 
                 try {
-                    if (self.data !== undefined) {
-                        self.data = Igiya.merge(self.data, response.data, self.data_merge_element);
-                    }
+
+                    let responseData = self.nestedAttribute ? responseData[self.nestedAttribute] : response.data;
+
+                    if (self.data !== undefined)
+                        self.data = Igiya.merge(self.data, responseData, self.data_merge_element);
                     else
-                        self.data = response.data;
+                        self.data = responseData;
 
 
                     _store.set(self.store_name, self.data);
