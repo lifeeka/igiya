@@ -101,8 +101,7 @@ class Igiya {
 
                     _store.set(self.store_name, self.data);
                     callback(false, self.data);
-                }
-                catch (e) {
+                } catch (e) {
                     callback(e.message, self.data);
                 }
             },
@@ -123,7 +122,17 @@ class Igiya {
 
         if (keyword) {
             filter_list = _filter(filter_list, function (data_array) {
-                return data_array[attribute].toUpperCase().includes(keyword.toUpperCase());
+                if (Array.isArray(attribute)) {//if column multiple
+
+                    let found = false;
+                    attribute.forEach(function (attr) {
+                        if(data_array[attr].toUpperCase().includes(keyword.toUpperCase()))
+                            found = true;
+                    });
+                    return found;
+
+                } else
+                    return data_array[attribute].toUpperCase().includes(keyword.toUpperCase());
             });
         }
 
@@ -135,8 +144,7 @@ class Igiya {
                 }, attribute, keyword, matches, false);
 
             }, keyword)
-        }
-        else {
+        } else {
             callback(filter_list);
         }
 

@@ -8,9 +8,9 @@ let IgiyaClass = new Igiya();
 
 it('should respond with redirect on get', function(done) {
 
-    this.timeout(5000);
+    this.timeout(20000);
 
-    IgiyaClass.initialize("http://apple.d/ajax/map/search/place", {}, 'igiya', 10, 'q', 'id', function (error, response) {
+    IgiyaClass.initialize("https://jsonplaceholder.typicode.com/comments", {}, 'igiya', 10, 'q', 'id', function (error, response) {
           IgiyaClass.search(function (result) {
 
 
@@ -18,7 +18,7 @@ it('should respond with redirect on get', function(done) {
               console.log(result);
               done();
 
-            },'name', "Male");
+            },['email','name'], "deserunt");
 
 
 
