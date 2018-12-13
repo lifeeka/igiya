@@ -17,7 +17,7 @@ class Igiya {
             let is_found = false;
             for (let i = 0; i < main_data.length; i++) {
                 if (main_data[i][data_merge_element] === data_merge[e][data_merge_element]) {
-                    data[i] =  data_merge[e];
+                    data[i] = data_merge[e];
                     is_found = true;
                 }
             }
@@ -127,8 +127,10 @@ class Igiya {
 
                     let found = false;
                     attribute.forEach(function (attr) {
-                        if(data_array[attr].toUpperCase().includes(keyword.toUpperCase()))
-                            found = true;
+                        if (data_array[attr] !== undefined) {
+                            if (data_array[attr].toUpperCase().includes(keyword.toUpperCase()))
+                                found = true;
+                        }
                     });
                     return found;
 
