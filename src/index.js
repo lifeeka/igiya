@@ -30,7 +30,7 @@ class Igiya {
     }
 
     initialize(url, param = [], store_name = 'igiya', refetch_limit = 10, refetch_keyword = 'q', data_merge_element = 'id', callback = function () {
-    }, forced = true, nestedAttribute = false) {
+    }, forced = true, nestedAttribute = false, removeOld = false) {
 
 
         this.url = url;
@@ -44,6 +44,7 @@ class Igiya {
         this.data_merge_element = data_merge_element;
 
         this.list_refetch_keyword = [];
+        this.removeOld = removeOld;
 
 
         let self = this;
@@ -134,8 +135,10 @@ class Igiya {
                     });
                     return found;
 
-                } else
-                    return data_array[attribute].toUpperCase().includes(keyword.toUpperCase());
+                } else {
+                    if(data_array[attribute] !== undefined)
+                        return data_array[attribute].toUpperCase().includes(keyword.toUpperCase());
+                }
             });
         }
 
