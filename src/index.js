@@ -48,6 +48,7 @@ class Igiya {
         //remove existing data
         if (this.removeOld) {
             _store.set(this.store_name, []);
+            _store.set('test', []);
         }
 
 
