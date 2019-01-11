@@ -1,6 +1,6 @@
 {
   "name": "igiya",
-  "version": " 0.0.33-alpha",
+  "version": " 0.0.34-alpha",
   "description": "Suggestion engine",
   "main": "lib/index.js",
   "scripts": {
