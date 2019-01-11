@@ -46,6 +46,11 @@ class Igiya {
         this.list_refetch_keyword = [];
         this.removeOld = removeOld;
 
+        //remove existing data
+        if(this.removeOld){
+            _store.remove(this.store_name);
+        }
+
 
         let self = this;
         this.data = _store.get(self.store_name);
