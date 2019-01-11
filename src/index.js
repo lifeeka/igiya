@@ -54,7 +54,7 @@ class Igiya {
             this.data = _store.get(this.store_name);
 
 
-        if (this.data !== undefined && this.data.length > 0 && !forced) {
+        if (this.data && this.data !== undefined && this.data.length > 0 && !forced) {
             callback(false, true, []);
             return true;
         }
