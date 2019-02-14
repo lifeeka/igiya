@@ -6,12 +6,8 @@ let _matches = require('lodash/matches');
 
 class Igiya {
 
-
     static merge(main_data, data_merge, data_merge_element) {
-
         let data = main_data;
-
-
         for (let e = 0; e < data_merge.length; e++) {
 
             let is_found = false;
@@ -49,21 +45,17 @@ class Igiya {
         if (this.removeOld) {
             _store.set(this.store_name, []);
             this.data = [];
-        }
-        else
+        } else
             this.data = _store.get(this.store_name);
-
 
         if (this.data && this.data !== undefined && this.data.length > 0 && !forced) {
             callback(false, true, []);
             return true;
         }
 
-
         this.fetch(function (error, body) {
             callback(error, self.data);
         });
-
     }
 
     fetch(callback = function () {
@@ -125,22 +117,30 @@ class Igiya {
         if (matches)
             filter_list = _filter(filter_list, _matches(matches));
 
-        if (keyword) {
+        if (keyword && !Array.isArray(keyword)) {
+
+            keyword = keyword.split(' ');
+
             filter_list = _filter(filter_list, function (data_array) {
                 if (Array.isArray(attribute)) {//if column multiple
-
                     let found = false;
                     attribute.forEach(function (attr) {
                         if (data_array[attr] !== undefined) {
-                            if (data_array[attr].toUpperCase().includes(keyword.toUpperCase()))
-                                found = true;
+                            keyword.forEach(function (keywordItem) {
+                                if (data_array[attr].toUpperCase().includes(keywordItem.toUpperCase())) found = true;
+                            });
                         }
                     });
                     return found;
 
                 } else {
-                    if (data_array[attribute] !== undefined)
-                        return data_array[attribute].toUpperCase().includes(keyword.toUpperCase());
+                    let found = false;
+                    if (data_array[attribute] !== undefined) {
+                        keyword.forEach(function (keywardItem) {
+                            if (data_array[attribute].toUpperCase().includes(keywardItem.toUpperCase())) found = true;
+                        });
+                        return found;
+                    }
                 }
             });
         }
