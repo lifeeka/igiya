@@ -62,7 +62,7 @@ class Igiya {
     }, keyword = false) {
 
         let self = this;
-        let data = {};
+        let data = this.param;
 
         if (this.busy) {
             callback(null, self.data);
@@ -81,10 +81,7 @@ class Igiya {
 
         self.busy = true;
 
-        this.param.params = data;
-
-
-        const request = axios.get(self.url, this.param.params);
+        const request = axios.get(self.url, this.param);
 
         return request.then(response => {
                 self.busy = false;
