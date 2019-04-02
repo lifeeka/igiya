@@ -29,7 +29,7 @@ class Igiya {
     }, forced = true, nestedAttribute = false, removeOld = false) {
 
         this.url = url;
-        this.param = url;
+        this.param = param;
         this.store_name = store_name;
         this.nestedAttribute = nestedAttribute;
 
@@ -81,7 +81,10 @@ class Igiya {
 
         self.busy = true;
 
-        const request = axios.get(self.url, {params: data});
+        this.param.params = data;
+
+
+        const request = axios.get(self.url, this.param.params);
 
         return request.then(response => {
                 self.busy = false;
